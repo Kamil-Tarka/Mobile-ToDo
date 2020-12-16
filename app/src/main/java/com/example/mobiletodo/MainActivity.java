@@ -11,6 +11,8 @@ import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.CalendarView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,19 +23,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        LinearLayout linearLayout = findViewById(R.id.linear);
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         String date = dateFormat.format(calendar.getTime());
-        TextView textView = findViewById(R.id.todoBox);
-        textView.setText(date);
-        CalendarView calendarView = findViewById(R.id.calendarView);
 
+        TextView textView = new TextView(MainActivity.this);
+        textView.setText(date);
+        linearLayout.addView(textView);
+
+
+        CalendarView calendarView = findViewById(R.id.calendarView);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-               String date = dayOfMonth+"-"+month+"-"+year;
-               TextView textView = findViewById(R.id.todoBox);
-               textView.setText(date);
+                String date = dayOfMonth + "-" + month + "-" + year;
+                TextView textView = new TextView(MainActivity.this);
+                textView.setText(date);
+                linearLayout.removeAllViews();
+                linearLayout.addView(textView);
             }
         });
 
