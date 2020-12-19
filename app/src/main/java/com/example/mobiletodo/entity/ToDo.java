@@ -1,13 +1,15 @@
 package com.example.mobiletodo.entity;
 
-public class toDo {
+public class ToDo {
     int id;
+    int userId;
     String date;
     String hour;
     String content;
 
-    public toDo(int id, String date, String hour, String content) {
+    public ToDo(int id, int userId, String date, String hour, String content) {
         this.id = id;
+        this.userId = userId;
         this.date = date;
         this.hour = hour;
         this.content = content;
@@ -15,6 +17,10 @@ public class toDo {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public void setDate(String date) {
@@ -33,6 +39,10 @@ public class toDo {
         return id;
     }
 
+    public int getUserId() {
+        return userId;
+    }
+
     public String getDate() {
         return date;
     }
@@ -43,5 +53,16 @@ public class toDo {
 
     public String getContent() {
         return content;
+    }
+
+    @Override
+    public String toString() {
+        return "ToDo{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", date='" + date + '\'' +
+                ", hour='" + hour + '\'' +
+                ", content='" + content + '\'' +
+                '}';
     }
 }
