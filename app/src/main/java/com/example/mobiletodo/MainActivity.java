@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.example.mobiletodo.entity.ToDo;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,16 +32,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        linearLayout = findViewById(R.id.linear);
-
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-
-        String date = dateFormat.format(calendar.getTime());
-
-        calendarDate=date;
-        showToDo(calendarDate);
         CalendarView calendarView = findViewById(R.id.calendarView);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        linearLayout = findViewById(R.id.linear);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        ToDo tmp = new ToDo(1, 1, "20-11-2020","13:13","xD");
+        toDos.add(tmp);
+
+        showToDo("20-11-2020");
+
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     public void addToDo(String date){
         EditText hour = findViewById(R.id.hourInput);
         EditText title = findViewById(R.id.titleInput);
-        ToDo toDo = new ToDo(1,1,date,hour.getText().toString(),title.getText().toString());
+        ToDo toDo = new ToDo(2,2,date,hour.getText().toString(),title.getText().toString());
         toDos.add(toDo);
 
         showToDo(date);
@@ -70,10 +70,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void showToDo(String date){
         linearLayout.removeAllViews();
-        for(int i=0; i<toDos.size(); i++){
-            if(date.equals(toDos.get(i).getDate()) || toDos.get(i).getDate().equals(date)) {
+        for(ToDo toDo: toDos){
+            if(toDo.getDate().equals(date)) {
                 TextView textView = new TextView(MainActivity.this);
-                textView.setText(toDos.get(i).getHour() + " " + toDos.get(i).getContent()+" "+toDos.get(i).getDate());
+                textView.setText(toDo.getHour() + " " + toDo.getContent()+" "+toDo.getDate());
                 linearLayout.addView(textView);
             }
         }
