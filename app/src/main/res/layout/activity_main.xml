@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/textView2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:foregroundTint="#FFFFFF"
@@ -50,11 +51,28 @@
 
         <EditText
             android:id="@+id/hourInput"
-            android:layout_width="78dp"
+            android:layout_width="38dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="HH:MM"
+            android:hint="HH"
+            android:inputType="textPersonName" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text=":"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/minuteInput"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="MM"
             android:inputType="textPersonName" />
 
         <EditText

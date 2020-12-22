@@ -7,6 +7,10 @@ public class ToDo {
     String hour;
     String content;
 
+    public ToDo(){
+
+    }
+
     public ToDo(int id, int userId, String date, String hour, String content) {
         this.id = id;
         this.userId = userId;
