@@ -2,7 +2,6 @@ package com.example.mobiletodo.controler;
 
 import android.content.Context;
 
-import com.example.mobiletodo.JsonHandler;
 import com.example.mobiletodo.entity.ToDo;
 
 import java.util.ArrayList;
@@ -37,8 +36,8 @@ public class ToDoControler {
         return false;
     }
 
-    public ToDo createToDo(String date, String hour, String content) {
-        return new ToDo(2, 2, date, hour, content);
+    public ToDo createToDo(int id, String date, String hour, String content) {
+        return new ToDo(id, 2, date, hour, content);
     }
 
 }
