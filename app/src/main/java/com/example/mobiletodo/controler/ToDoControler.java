@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.mobiletodo.entity.ToDo;
 
+
 import java.util.ArrayList;
 
 public class ToDoControler {
@@ -36,8 +37,8 @@ public class ToDoControler {
         return false;
     }
 
-    public ToDo createToDo(int id, String date, String hour, String content) {
-        return new ToDo(id, 2, date, hour, content);
+    public ToDo createToDo(int id, int userId, String date, String hour, String content) {
+        return new ToDo(id, userId, date, hour, content);
     }
 
 }

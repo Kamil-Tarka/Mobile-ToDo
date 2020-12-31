@@ -3,6 +3,7 @@ package com.example.mobiletodo.controler;
 import android.content.Context;
 
 import com.example.mobiletodo.entity.ToDo;
+import com.example.mobiletodo.entity.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -89,4 +90,20 @@ public class JsonHandler {
         }
         return toDos;
     }
+
+    public User readUserFromJSON(String json) {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonStr = readJSONStr(json);
+        User user = null;
+        if (jsonStr != null) {
+            try {
+                user = mapper.readValue(jsonStr, new TypeReference<User>() {
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return user;
+    }
+
 }
