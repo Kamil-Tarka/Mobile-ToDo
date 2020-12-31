@@ -31,8 +31,8 @@ public class UserControler {
         return false;
     }
 
-    public User createUser(int id, String name, String email, String password){
-        return new User(id, name, email, password);
+    public User createUser( String name, String email, String password){
+        return new User(name, email, password);
     }
 
 }

@@ -2,7 +2,7 @@ package com.example.mobiletodo.entity;
 
 public class ToDo {
     int id;
-    int userId;
+    String userEmail;
     String date;
     String hour;
     String content;
@@ -11,9 +11,9 @@ public class ToDo {
 
     }
 
-    public ToDo(int id, int userId, String date, String hour, String content) {
+    public ToDo(int id, String userEmail, String date, String hour, String content) {
         this.id = id;
-        this.userId = userId;
+        this.userEmail = userEmail;
         this.date = date;
         this.hour = hour;
         this.content = content;
@@ -23,8 +23,8 @@ public class ToDo {
         this.id = id;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public void setDate(String date) {
@@ -43,8 +43,8 @@ public class ToDo {
         return id;
     }
 
-    public int getUserId() {
-        return userId;
+    public String getUserEmail() {
+        return userEmail;
     }
 
     public String getDate() {
@@ -63,7 +63,7 @@ public class ToDo {
     public String toString() {
         return "ToDo{" +
                 "id=" + id +
-                ", userId=" + userId +
+                ", userEmail='" + userEmail + '\'' +
                 ", date='" + date + '\'' +
                 ", hour='" + hour + '\'' +
                 ", content='" + content + '\'' +

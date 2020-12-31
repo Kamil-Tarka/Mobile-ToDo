@@ -12,8 +12,6 @@ import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
@@ -87,7 +85,7 @@ public class ToDoCalendar extends AppCompatActivity {
             EditText minute = findViewById(R.id.minuteInput);
             EditText content = findViewById(R.id.titleInput);
 
-            toDos.add(toDoControler.createToDo(toDos.get(toDos.size()-1).getId()+1, 1, date, hour.getText().toString() + ":" + minute.getText().toString(), content.getText().toString()));
+            toDos.add(toDoControler.createToDo(toDos.size()+1, "xD", date, hour.getText().toString() + ":" + minute.getText().toString(), content.getText().toString()));
             toDoControler.saveToDos(toDos);
             showToDo(date);
         }
