@@ -48,12 +48,6 @@ public class Options extends AppCompatActivity {
                 builder.setTitle("O aplikacji");
                 builder.setMessage("Jest to projekt realizowany w ramach przedmiotu \"Wstęp do systemów mobilnych\"");
                 builder.setCancelable(true);
-                /*builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Options.this.finish();
-                    }
-                });*/
                 builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

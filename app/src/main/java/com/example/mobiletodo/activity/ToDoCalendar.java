@@ -5,7 +5,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -23,10 +22,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.mobiletodo.NetworkManager;
 import com.example.mobiletodo.R;
-import com.example.mobiletodo.controler.JsonHandler;
 import com.example.mobiletodo.controler.ToDoControler;
 import com.example.mobiletodo.controler.UserControler;
 import com.example.mobiletodo.entity.ToDo;
@@ -34,10 +32,8 @@ import com.example.mobiletodo.entity.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -52,6 +48,7 @@ public class ToDoCalendar extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private User user;
     private UserControler userControler;
+    private NetworkManager networkManager;
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +57,8 @@ public class ToDoCalendar extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         setContentView(R.layout.activity_to_do_calendar);
         ToDoCalendar.context = getApplicationContext();
+
+        networkManager = new NetworkManager(context);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -80,17 +79,18 @@ public class ToDoCalendar extends AppCompatActivity {
         if(userControler.checkSavedData()) {
             user = userControler.readUser();
             Log.i("user", user.toString());
-
             if (toDoControler.checkSavedData()) {
                 toDos = toDoControler.updateToDos();
-                if(toDos.size()>0) {
-                    if (toDos.get(toDos.size() - 1).getUserEmail() != user.getEmail()) {
+                for(ToDo toDo: toDos) {
+                    if (!toDo.getUserEmail().equals(user.getEmail())) {
+                        Log.i("todoTest", toDos.get(toDos.size()-1).toString());
                         toDos.clear();
                         toDoControler.removeToDos();
                     }
-                    showToDo(calendarDate);
                 }
-            } else {
+                showToDo(calendarDate);
+            }
+            else if(networkManager.checkConnection()){
                 mDatabase.child("ToDos").child("User_" + user.getEmail()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -112,6 +112,7 @@ public class ToDoCalendar extends AppCompatActivity {
             Intent intent = new Intent(this, CreateProfile.class);
             startActivity(intent);
         }
+
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
@@ -125,8 +126,13 @@ public class ToDoCalendar extends AppCompatActivity {
                     calendarDate = dayOfMonth + "-" + (month + 1) + "-" + year;
                 }
                 showToDo(calendarDate);
+                toDoControler.syncData(toDos, user);
+                userControler.syncData(user);
             }
         });
+
+        toDoControler.syncData(toDos, user);
+        userControler.syncData(user);
 
         Button button = findViewById(R.id.buttonToDo);
         button.setOnClickListener(new View.OnClickListener() {

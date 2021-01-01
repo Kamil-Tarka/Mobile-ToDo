@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.mobiletodo.NetworkManager;
 import com.example.mobiletodo.R;
 import com.example.mobiletodo.controler.Validator;
 import com.example.mobiletodo.controler.UserControler;
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private UserControler userControler;
     private Validator validator;
-
+    private NetworkManager networkManager;
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         userControler = new UserControler(context);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         validator = new Validator();
+        networkManager = new NetworkManager(context);
 
         if(userControler.checkSavedData()){
             openToDo();
@@ -82,22 +84,30 @@ public class MainActivity extends AppCompatActivity {
 
                 String email = login.getText().toString().replace(".", "");
 
-                mDatabase.child("Users").child("User_" + email).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        if (task.getResult().exists()) {
-                            User tmp;
-                            tmp = task.getResult().getValue(User.class);
-                            if (tmp.getEmail().equals(email) && tmp.getPassword().equals(password.getText().toString())) {
-                                userControler.saveUser(tmp);
-                                openToDo();
+                if(networkManager.checkConnection()) {
+
+                    mDatabase.child("Users").child("User_" + email).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            if (task.getResult().exists()) {
+                                User tmp;
+                                tmp = task.getResult().getValue(User.class);
+                                if (tmp.getEmail().equals(email) && tmp.getPassword().equals(password.getText().toString())) {
+                                    userControler.saveUser(tmp);
+                                    openToDo();
+                                }
+                            } else {
+                                Toast toast = Toast.makeText(context, "Podano błędny e-mail lub hasło", Toast.LENGTH_LONG);
+                                toast.show();
                             }
-                        } else {
-                            Toast toast = Toast.makeText(context, "Podano błędny e-mail lub hasło", Toast.LENGTH_LONG);
-                            toast.show();
                         }
-                    }
-                });
+                    });
+                }
+                else {
+                    Toast toast = Toast.makeText(context, "Nie można zalogować, brak połączenia z siecią.", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+
             }
             else {
                 Toast toast = Toast.makeText(context, "Wprowaź poprawny e-mail", Toast.LENGTH_LONG);

@@ -2,10 +2,12 @@ package com.example.mobiletodo.controler;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
 
+import com.example.mobiletodo.NetworkManager;
 import com.example.mobiletodo.activity.ToDoCalendar;
 import com.example.mobiletodo.entity.ToDo;
 import com.example.mobiletodo.entity.User;
@@ -26,11 +28,12 @@ public class ToDoControler {
     private final String filename = "todo.json";
     Context fileContext;
     JsonHandler jsonHandler;
-
+    private NetworkManager networkManager;
     public ToDoControler(Context fileContext) {
         this.fileContext = fileContext;
         this.jsonHandler = new JsonHandler(this.fileContext);
         this.mDatabase = FirebaseDatabase.getInstance().getReference();
+        this.networkManager = new NetworkManager(fileContext);
     }
 
     public boolean checkSavedData() {
@@ -47,7 +50,14 @@ public class ToDoControler {
 
     public boolean saveToDos(ArrayList<ToDo> toDos, User user) {
         if (jsonHandler.saveToJSON(toDos, filename)) {
-            mDatabase.child("ToDos").child("User_"+user.getEmail()).setValue(toDos);
+            if(networkManager.checkConnection()){
+                mDatabase.child("ToDos").child("User_"+user.getEmail()).setValue(toDos);
+            }
+            else{
+                Toast toast = Toast.makeText(fileContext, "Z powodu braku dostępu do sieci, dane zostały zapisane lokalnie. Aplikacja przeprowadzi synchronizację przy najbliższej okazji.", Toast.LENGTH_LONG);
+                toast.show();
+            }
+
             return true;
         }
         return false;
@@ -58,6 +68,12 @@ public class ToDoControler {
             return true;
         }
         return false;
+    }
+
+    public void syncData(ArrayList<ToDo> toDos, User user){
+        if(networkManager.checkConnection()){
+            mDatabase.child("ToDos").child("User_"+user.getEmail()).setValue(toDos);
+        }
     }
 
 }

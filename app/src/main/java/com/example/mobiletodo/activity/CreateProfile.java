@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.mobiletodo.NetworkManager;
 import com.example.mobiletodo.R;
 import com.example.mobiletodo.controler.Validator;
 import com.example.mobiletodo.controler.UserControler;
@@ -51,10 +52,10 @@ public class CreateProfile extends AppCompatActivity {
             if(validator.isEmailValid(tmp)) {
 
                 User user = new User(tmp.replace(".", ""), password.getText().toString());
-                Log.i("TESTU", user.toString());
+
                 userControler.saveUser(user);
-                Toast toast = Toast.makeText(context, "Zapisano profil", Toast.LENGTH_LONG);
-                toast.show();
+                /*Toast toast = Toast.makeText(context, "Zapisano profil", Toast.LENGTH_LONG);
+                toast.show();*/
                 Intent intent = new Intent(this, ToDoCalendar.class);
                 startActivity(intent);
             }
