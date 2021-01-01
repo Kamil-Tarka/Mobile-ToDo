@@ -12,21 +12,26 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.mobiletodo.R;
+import com.example.mobiletodo.Validator;
 import com.example.mobiletodo.controler.UserControler;
 import com.example.mobiletodo.entity.User;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CreateProfile extends AppCompatActivity {
 
     private static Context context;
     private Button createProfileButton;
     private UserControler userControler;
+    private Validator validator;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_profile);
         CreateProfile.context = getApplicationContext();
         userControler = new UserControler(context);
-
+        validator = new Validator();
         createProfileButton = findViewById(R.id.saveProfileBtn);
         createProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,13 +51,20 @@ public class CreateProfile extends AppCompatActivity {
         } else {
             String tmp = email.getText().toString();
 
-            User user = new User(tmp.replace(".", ""), password.getText().toString());
-            Log.i("TESTU", user.toString());
-            userControler.saveUser(user);
-            Toast toast = Toast.makeText(context, "Zapisano profil", Toast.LENGTH_LONG);
-            toast.show();
-            Intent intent = new Intent(this, ToDoCalendar.class);
-            startActivity(intent);
+            if(validator.isEmailValid(tmp)) {
+
+                User user = new User(tmp.replace(".", ""), password.getText().toString());
+                Log.i("TESTU", user.toString());
+                userControler.saveUser(user);
+                Toast toast = Toast.makeText(context, "Zapisano profil", Toast.LENGTH_LONG);
+                toast.show();
+                Intent intent = new Intent(this, ToDoCalendar.class);
+                startActivity(intent);
+            }
+            else{
+                Toast toast = Toast.makeText(context, "Wprowaź poprawny e-mail", Toast.LENGTH_LONG);
+                toast.show();
+            }
         }
     }
 

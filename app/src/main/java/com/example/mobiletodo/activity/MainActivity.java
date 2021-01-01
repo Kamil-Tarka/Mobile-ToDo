@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.mobiletodo.R;
+import com.example.mobiletodo.Validator;
 import com.example.mobiletodo.controler.UserControler;
 import com.example.mobiletodo.entity.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,8 +30,9 @@ public class MainActivity extends AppCompatActivity {
     private Button createProfile;
     private static Context context;
     private DatabaseReference mDatabase;
-    private User user;
     private UserControler userControler;
+    private Validator validator;
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         MainActivity.context = getApplicationContext();
         userControler = new UserControler(context);
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        validator = new Validator();
 
         if(userControler.checkSavedData()){
             openToDo();
@@ -75,24 +78,31 @@ public class MainActivity extends AppCompatActivity {
             toast.show();
         } else {
 
-            String email = login.getText().toString().replace(".", "");
+            if(validator.isEmailValid(login.getText().toString())) {
 
-            mDatabase.child("Users").child("User_" + email).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DataSnapshot> task) {
-                    if(task.getResult().exists()){
-                    User tmp;
-                    tmp = task.getResult().getValue(User.class);
-                    if (tmp.getEmail().equals(email) && tmp.getPassword().equals(password.getText().toString())) {
-                        userControler.saveUser(tmp);
-                        openToDo();
+                String email = login.getText().toString().replace(".", "");
+
+                mDatabase.child("Users").child("User_" + email).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if (task.getResult().exists()) {
+                            User tmp;
+                            tmp = task.getResult().getValue(User.class);
+                            if (tmp.getEmail().equals(email) && tmp.getPassword().equals(password.getText().toString())) {
+                                userControler.saveUser(tmp);
+                                openToDo();
+                            }
+                        } else {
+                            Toast toast = Toast.makeText(context, "Podano błędny e-mail lub hasło", Toast.LENGTH_LONG);
+                            toast.show();
+                        }
                     }
-                    } else {
-                        Toast toast = Toast.makeText(context, "Podano błędny e-mail lub hasło", Toast.LENGTH_LONG);
-                        toast.show();
-                    }
-                }
-            });
+                });
+            }
+            else {
+                Toast toast = Toast.makeText(context, "Wprowaź poprawny e-mail", Toast.LENGTH_LONG);
+                toast.show();
+            }
         }
     }
 
