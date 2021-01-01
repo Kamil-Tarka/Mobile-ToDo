@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MobileToDo">
-        <activity android:name=".activity.CreateProfile"></activity>
+        <activity android:name=".activity.Options"></activity>
+        <activity android:name=".activity.CreateProfile" />
         <activity android:name=".activity.ToDoCalendar" />
         <activity android:name=".activity.MainActivity">
             <intent-filter>

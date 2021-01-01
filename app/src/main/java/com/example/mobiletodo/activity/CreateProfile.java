@@ -12,12 +12,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.mobiletodo.R;
-import com.example.mobiletodo.Validator;
+import com.example.mobiletodo.controler.Validator;
 import com.example.mobiletodo.controler.UserControler;
 import com.example.mobiletodo.entity.User;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class CreateProfile extends AppCompatActivity {
 

@@ -44,4 +44,11 @@ public class UserControler {
         return false;
     }
 
+    public boolean removeUser(){
+        if(jsonHandler.removeJson(filename)){
+            return true;
+        }
+        return false;
+    }
+
 }

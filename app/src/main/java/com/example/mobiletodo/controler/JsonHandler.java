@@ -107,4 +107,12 @@ public class JsonHandler {
         return user;
     }
 
+    public boolean removeJson(String filename){
+        File file = fileContext.getFileStreamPath(filename);
+        if(file.delete()){
+            return true;
+        }
+        return false;
+    }
+
 }

@@ -11,6 +11,12 @@
         android:layout_width="414dp"
         android:layout_height="390dp"
         android:layout_marginTop="5dp"
+        android:focusedMonthDateColor="#FFFFFF"
+        android:scrollbarSize="6dp"
+        android:selectedWeekBackgroundColor="#FFFFFF"
+        android:unfocusedMonthDateColor="#000000"
+        android:weekNumberColor="#000000"
+        android:weekSeparatorLineColor="#000000"
         app:layout_constraintBottom_toTopOf="@+id/scrollView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.666"
@@ -56,7 +62,8 @@
             android:ems="10"
             android:hint="HH"
             android:inputType="number"
-            android:maxLength="2" />
+            android:maxLength="2"
+            android:textColor="#000000" />
 
         <TextView
             android:id="@+id/textView"
@@ -64,6 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text=":"
+            android:textColor="#000000"
             android:textSize="18sp" />
 
         <EditText
@@ -74,7 +82,8 @@
             android:ems="10"
             android:hint="MM"
             android:inputType="number"
-            android:maxLength="2" />
+            android:maxLength="2"
+            android:textColor="#000000" />
 
         <EditText
             android:id="@+id/titleInput"
@@ -83,7 +92,8 @@
             android:layout_weight="1"
             android:ems="10"
             android:hint="ToDo"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:textColor="#000000" />
 
         <Button
             android:id="@+id/buttonToDo"

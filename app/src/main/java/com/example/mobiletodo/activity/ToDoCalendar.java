@@ -2,6 +2,7 @@ package com.example.mobiletodo.activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -14,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
@@ -21,6 +23,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mobiletodo.R;
 import com.example.mobiletodo.controler.JsonHandler;
@@ -58,6 +61,10 @@ public class ToDoCalendar extends AppCompatActivity {
         setContentView(R.layout.activity_to_do_calendar);
         ToDoCalendar.context = getApplicationContext();
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_24);
+
         toDoControler = new ToDoControler(context);
         userControler = new UserControler(context);
 
@@ -76,7 +83,12 @@ public class ToDoCalendar extends AppCompatActivity {
 
             if (toDoControler.checkSavedData()) {
                 toDos = toDoControler.updateToDos();
+                if(toDos.get(toDos.size()-1).getUserEmail()!=user.getEmail()){
+                    toDos.clear();
+                    toDoControler.removeToDos();
+                }
                 showToDo(calendarDate);
+
             } else {
                 mDatabase.child("ToDos").child("User_" + user.getEmail()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
@@ -85,9 +97,12 @@ public class ToDoCalendar extends AppCompatActivity {
                         for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
                             ToDo toDo;
                             toDo = dataSnapshot.getValue(ToDo.class);
+
                             toDos.add(toDo);
+
                         }
                         showToDo(calendarDate);
+                        toDoControler.saveToDos(toDos, user);
                     }
                 });
             }
@@ -127,7 +142,7 @@ public class ToDoCalendar extends AppCompatActivity {
         EditText content = findViewById(R.id.titleInput);
 
         if(toDos.size()!=0) {
-            toDos.add(new ToDo(toDos.get(toDos.size() - 1).getId()+1, "xD", date, hour.getText().toString() + ":" + minute.getText().toString(), content.getText().toString()));
+            toDos.add(new ToDo(toDos.get(toDos.size() - 1).getId()+1, user.getEmail(), date, hour.getText().toString() + ":" + minute.getText().toString(), content.getText().toString()));
             toDoControler.saveToDos(toDos, user);
         }
         else {
@@ -148,22 +163,23 @@ public class ToDoCalendar extends AppCompatActivity {
                 TextView textView = new TextView(ToDoCalendar.this);
                 textView.setTextSize(18);
                 textView.setText(toDo.getHour() + " " + toDo.getContent());
+                textView.setTextColor(Color.BLACK);
                 linearLayout2.addView(textView);
-                TextView button = new TextView(ToDoCalendar.this);
-                button.setLayoutParams(new RelativeLayout.LayoutParams(100, 150));
-                button.setText("X");
-                button.setTextSize(18);
-                button.setTextColor(Color.RED);
+                TextView del = new TextView(ToDoCalendar.this);
+                del.setLayoutParams(new RelativeLayout.LayoutParams(100, 150));
+                del.setText("X");
+                del.setTextSize(18);
+                del.setTextColor(Color.RED);
 
                 textView.setWidth(displayMetrics.widthPixels - 180);
                 final int index = toDos.indexOf(toDo);
-                button.setOnClickListener(new View.OnClickListener() {
+                del.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         remove(index);
                     }
                 });
-                linearLayout2.addView(button);
+                linearLayout2.addView(del);
                 linearLayout.addView(linearLayout2);
             }
         }
@@ -173,6 +189,13 @@ public class ToDoCalendar extends AppCompatActivity {
         toDos.remove(toDos.get(id));
         toDoControler.saveToDos(toDos, user);
         showToDo(calendarDate);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Intent intent = new Intent(this, Options.class);
+        startActivity(intent);
+        return super.onOptionsItemSelected(item);
     }
 
 }

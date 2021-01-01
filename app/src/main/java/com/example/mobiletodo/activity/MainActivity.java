@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.mobiletodo.R;
-import com.example.mobiletodo.Validator;
+import com.example.mobiletodo.controler.Validator;
 import com.example.mobiletodo.controler.UserControler;
 import com.example.mobiletodo.entity.User;
 import com.google.android.gms.tasks.OnCompleteListener;
