@@ -83,12 +83,13 @@ public class ToDoCalendar extends AppCompatActivity {
 
             if (toDoControler.checkSavedData()) {
                 toDos = toDoControler.updateToDos();
-                if(toDos.get(toDos.size()-1).getUserEmail()!=user.getEmail()){
-                    toDos.clear();
-                    toDoControler.removeToDos();
+                if(toDos.size()>0) {
+                    if (toDos.get(toDos.size() - 1).getUserEmail() != user.getEmail()) {
+                        toDos.clear();
+                        toDoControler.removeToDos();
+                    }
+                    showToDo(calendarDate);
                 }
-                showToDo(calendarDate);
-
             } else {
                 mDatabase.child("ToDos").child("User_" + user.getEmail()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
@@ -146,7 +147,7 @@ public class ToDoCalendar extends AppCompatActivity {
             toDoControler.saveToDos(toDos, user);
         }
         else {
-            toDos.add(new ToDo(1, "xD", date, hour.getText().toString() + ":" + minute.getText().toString(), content.getText().toString()));
+            toDos.add(new ToDo(1, user.getEmail(), date, hour.getText().toString() + ":" + minute.getText().toString(), content.getText().toString()));
             toDoControler.saveToDos(toDos, user);
         }
         showToDo(date);
