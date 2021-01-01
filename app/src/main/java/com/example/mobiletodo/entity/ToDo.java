@@ -7,7 +7,9 @@ public class ToDo {
     String hour;
     String content;
 
-    public ToDo(){
+    public ToDo(){}
+
+    public ToDo(Object value){
 
     }
 
