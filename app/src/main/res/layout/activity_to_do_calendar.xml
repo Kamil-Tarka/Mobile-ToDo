@@ -8,8 +8,8 @@
 
     <CalendarView
         android:id="@+id/calendarView"
-        android:layout_width="414dp"
-        android:layout_height="390dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:focusedMonthDateColor="#FFFFFF"
         android:scrollbarSize="6dp"
@@ -19,21 +19,19 @@
         android:weekSeparatorLineColor="#000000"
         app:layout_constraintBottom_toTopOf="@+id/scrollView2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="415dp"
-        android:layout_height="200dp"
+        android:layout_width="0dp"
+        android:layout_height="220dp"
 
         android:layout_marginTop="7dp"
         android:fillViewport="true"
         android:padding="16dp"
         app:layout_constraintEnd_toEndOf="@id/linearLayout"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/linearLayout"
         app:layout_constraintTop_toBottomOf="@+id/calendarView">
 
@@ -46,17 +44,18 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginBottom="2dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
+        app:layout_constraintVertical_bias="0.65">
 
         <EditText
             android:id="@+id/hourInput"
-            android:layout_width="38dp"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
@@ -76,7 +75,7 @@
 
         <EditText
             android:id="@+id/minuteInput"
-            android:layout_width="40dp"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
@@ -87,7 +86,7 @@
 
         <EditText
             android:id="@+id/titleInput"
-            android:layout_width="244dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
@@ -97,7 +96,7 @@
 
         <Button
             android:id="@+id/buttonToDo"
-            android:layout_width="91dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Dodaj" />

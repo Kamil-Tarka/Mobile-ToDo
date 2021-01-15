@@ -105,10 +105,5 @@ public class Options extends AppCompatActivity {
         startActivity(intent);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Intent intent = new Intent(this, Options.class);
-        startActivity(intent);
-        return super.onOptionsItemSelected(item);
-    }
+
 }
